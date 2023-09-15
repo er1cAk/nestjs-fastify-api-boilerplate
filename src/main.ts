@@ -7,12 +7,14 @@ import {
 } from '@nestjs/platform-fastify';
 
 import 'reflect-metadata';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ logger: true }),
   );
+  app.useGlobalPipes(new ValidationPipe());
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
       .setTitle('API documentation')

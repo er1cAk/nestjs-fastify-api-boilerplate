@@ -19,6 +19,10 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id });
   }
 
+  findByEmail(email: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ email });
+  }
+
   async create(user: DeepPartial<User>): Promise<number> {
     const newUser = this.usersRepository.create(user);
     return (await this.usersRepository.save(newUser)).id;

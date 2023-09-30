@@ -1,23 +1,9 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { UpdateUserDto } from './dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import {
-  ApiTags,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiNotFoundResponse,
-  ApiForbiddenResponse,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 import { UsersResponse } from './enums';
 
 @ApiTags('users')
@@ -37,16 +23,6 @@ export class UsersController {
   @ApiNotFoundResponse({ description: UsersResponse.USER_NOT_FOUND })
   getUser(@Param('id') id: number): Promise<User | null> {
     return this.userService.findOne(id);
-  }
-
-  @Post()
-  @ApiCreatedResponse({
-    description: UsersResponse.USER_CREATED,
-    type: 'number',
-  })
-  @ApiForbiddenResponse({ description: UsersResponse.USER_CREATE_FAILED })
-  createUser(@Body() createUserDto: CreateUserDto): Promise<number> {
-    return this.userService.create(createUserDto);
   }
 
   @Patch(':id')

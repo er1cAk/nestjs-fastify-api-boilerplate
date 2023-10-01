@@ -26,4 +26,16 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
   },
+  'import/order': [
+    2,
+    {
+      groups: [
+        'builtin',
+        'external',
+        'internal',
+        ['parent', 'sibling', 'index'],
+      ],
+      'newlines-between': 'always',
+    },
+  ],
 };

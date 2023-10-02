@@ -4,7 +4,8 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-
+import type { FastifyCookieOptions } from '@fastify/cookie';
+import cookie from '@fastify/cookie';
 import 'reflect-metadata';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app/app.module';
@@ -17,6 +18,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.register(cookie, {
+    secret: 'my-secret', // for cookies signature
+    parseOptions: {}, // options for parsing cookies
+  } as FastifyCookieOptions);
 
   if (process.env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()

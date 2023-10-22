@@ -23,11 +23,14 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -43,6 +46,9 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: FastifyRequest): string | undefined {
-    return request.cookies['access_token'];
+    if ('cookies' in request) {
+      return request.cookies['access_token'];
+    }
+    return undefined;
   }
 }
